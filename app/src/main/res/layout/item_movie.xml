@@ -57,18 +57,6 @@
             app:layout_constraintTop_toBottomOf="@id/movieName"
             tools:text="2018" />
 
-        <!--            <TextView-->
-        <!--                android:id="@+id/movieId"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:visibility="gone"-->
-        <!--                android:layout_marginStart="12dp"-->
-        <!--                android:layout_marginTop="8dp"-->
-        <!--                android:layout_marginBottom="20dp"-->
-        <!--                android:textColor="@android:color/white"-->
-        <!--                android:fontFamily="@font/nunito"-->
-        <!--                tools:text="id"/>-->
-
         <RatingBar
             android:id="@+id/rating_bar"
             style="?android:ratingBarStyleIndicator"
