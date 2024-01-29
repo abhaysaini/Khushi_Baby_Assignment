@@ -77,27 +77,3 @@ class NowPlayingFragment : Fragment(R.layout.fragment_now_playing), OnItemClickL
             .commit()
     }
 }
-
-
-
-
-
-//
-//        CoroutineScope(Dispatchers.Main).launch {
-//            try {
-//                val response = RetrofitHelper.responseApiInterface.getMovieNowPlaying(
-//                    "Bearer ${BuildConfig.ACCESS_TOKEN_AUTH}"
-//                )
-//                if (response.isSuccessful) {
-//                    Log.d("abhay", response.body().toString())
-//                    val movieDisplayList = response.body()?.results
-//                    requireActivity().runOnUiThread {
-//                        movieDisplayList?.let { setupRecyclerView(it) }
-//                    }
-//                } else {
-//                    Log.d("abhay", response.message().toString())
-//                }
-//            } catch (e: Exception) {
-//                Log.i("abhay", e.message.toString())
-//            }
-//        }

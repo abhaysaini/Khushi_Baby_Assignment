@@ -1,5 +1,6 @@
 package com.example.khushi_baby_assignemnt.ui.fragments.popular
 
+import PopularViewModel
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.khushi_baby_assignemnt.R
 import com.example.khushi_baby_assignemnt.data.model.MovieResponse
@@ -16,9 +18,11 @@ import com.example.khushi_baby_assignemnt.ui.adapter.OnItemClickListener
 import com.example.khushi_baby_assignemnt.ui.adapter.PopularAdapter
 import com.example.khushi_baby_assignemnt.ui.fragments.moviedetails.MovieDetailFragment
 import com.example.khushi_baby_assignemnt.ui.fragments.popular.viewmodel.PopularRepository
-import com.example.khushi_baby_assignemnt.ui.fragments.popular.viewModel.PopularViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import com.example.khushi_baby_assignemnt.ui.fragments.popular.viewModel.PopularViewModelFactory
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.launch
 
 class PopularFragment : Fragment(R.layout.fragment_popular) ,OnItemClickListener{
 
@@ -41,29 +45,27 @@ class PopularFragment : Fragment(R.layout.fragment_popular) ,OnItemClickListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = PopularAdapter(requireContext(), mutableListOf(), this)
-        binding.recyclerView.layoutManager = GridLayoutManager(
-            requireContext(), 2,
-            GridLayoutManager.VERTICAL, false
-        )
-        binding.recyclerView.adapter = adapter
+        Log.i("paging", "Popular fragment view created")
 
-        viewModel.popularMovies.observe(viewLifecycleOwner, Observer { movies ->
-            movies?.let { setupRecyclerView(it) }
-        })
-        viewModel.error.observe(viewLifecycleOwner, Observer { error ->
+        adapter = PopularAdapter(requireContext(), this)
+        binding.recyclerView.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            this.adapter = adapter
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.popularMovies.collectLatest { pagingData ->
+                if (pagingData != null) {
+                    adapter.submitData(pagingData)
+                }
+            }
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
             error?.let { Log.e("PopularFragment", it) }
-        })
+        }
 
         viewModel.fetchPopularMovies()
-    }
-
-    private fun setupRecyclerView(movieList: List<MovieResponse>) {
-        adapter.apply {
-            moviesList.clear()
-            moviesList.addAll(movieList)
-            notifyDataSetChanged()
-        }
     }
 
     override fun onItemClick(movieId: Int) {
@@ -79,25 +81,3 @@ class PopularFragment : Fragment(R.layout.fragment_popular) ,OnItemClickListener
             .commit()
     }
 }
-
-
-
-
-//        CoroutineScope(Dispatchers.Main).launch {
-//            try {
-//                val response = RetrofitHelper.responseApiInterface.getPopularMovies(
-//                    "Bearer ${BuildConfig.ACCESS_TOKEN_AUTH}"
-//                )
-//                if (response.isSuccessful) {
-//                    Log.d("abhay", response.body().toString())
-//                    val movieDisplayList = response.body()?.results
-//                    requireActivity().runOnUiThread {
-//                        movieDisplayList?.let { setupRecyclerView(it) }
-//                    }
-//                } else {
-//                    Log.d("abhay", response.message().toString())
-//                }
-//            } catch (e: Exception) {
-//                Log.i("abhay", e.message.toString())
-//            }
-//        }

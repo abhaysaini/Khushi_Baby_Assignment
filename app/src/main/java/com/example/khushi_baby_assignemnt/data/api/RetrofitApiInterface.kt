@@ -16,13 +16,15 @@ interface RetrofitApiInterface {
 
     @GET("movie/now_playing")
     suspend fun getMovieNowPlaying(
-        @Header("Authorization") authorization: String
+        @Header("Authorization") authorization: String,
+        @Query("page") page : Int
     ): Response<NowPlayingMoviesResponse>
 
 
     @GET("movie/popular")
     suspend fun getPopularMovies(
         @Header("Authorization") authorization: String,
+        @Query("page") page : Int
     ): Response<PopularMoviesResponse>
 
     @GET("movie/{movie_id}")

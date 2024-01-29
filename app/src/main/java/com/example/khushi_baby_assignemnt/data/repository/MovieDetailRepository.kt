@@ -6,7 +6,6 @@ import com.example.khushi_baby_assignemnt.data.model.MovieDetailsResponse
 import retrofit2.Response
 
 class MovieDetailRepository {
-
     suspend fun getMovieDetails(movieId: Int): Response<MovieDetailsResponse> {
         return RetrofitHelper.responseApiInterface.getMovieDetails(
             movieId,

@@ -46,7 +46,6 @@ class NowPlayingAdapter(
                 }
             }
             itemView.setOnClickListener {
-                // Pass the movie ID to the click listener
                 itemClickListener.onItemClick(movie.id)
             }
         }

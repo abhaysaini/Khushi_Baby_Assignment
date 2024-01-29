@@ -10,9 +10,7 @@ import com.example.khushi_baby_assignemnt.ui.fragments.popular.PopularFragment
 
 class MyPagerAdapter  (fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
-
-    override fun getItemCount(): Int = 2 // No of fragment you want to show
-
+    override fun getItemCount(): Int = 2
     override fun createFragment(position: Int): Fragment {
         when (position) {
             0 -> return PopularFragment()

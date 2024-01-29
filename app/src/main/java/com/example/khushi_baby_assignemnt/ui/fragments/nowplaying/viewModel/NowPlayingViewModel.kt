@@ -24,7 +24,7 @@ class NowPlayingViewModel(private val repository: NowPlayingRepository) : ViewMo
     fun fetchNowPlayingMovies() {
         viewModelScope.launch {
             try {
-                val response = repository.getNowPlayingMovies()
+                val response = repository.getNowPlayingMovies(1)
                 if (response.isSuccessful) {
                     response.body()?.let { _nowPlayingMovies.postValue(it.results) }
                 } else {

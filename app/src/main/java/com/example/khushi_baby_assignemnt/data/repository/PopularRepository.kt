@@ -7,10 +7,11 @@ import com.example.khushi_baby_assignemnt.utils.Constants
 import retrofit2.Response
 
 class PopularRepository {
-
-    suspend fun getPopularMovies(): Response<PopularMoviesResponse> {
-        return RetrofitHelper.responseApiInterface.getPopularMovies(
-            "Bearer ${BuildConfig.ACCESS_TOKEN_AUTH}"
-        )
+    suspend fun getPopularMovies(page: Int): Response<PopularMoviesResponse> {
+        return try {
+           RetrofitHelper.responseApiInterface.getPopularMovies("Bearer ${BuildConfig.ACCESS_TOKEN_AUTH}", page)
+        } catch (e: Exception) {
+            throw Exception("Error fetching popular movies: ${e.message}")
+        }
     }
 }
