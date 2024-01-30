@@ -1,26 +1,28 @@
-// PopularViewModel.kt
 package com.example.khushi_baby_assignemnt.ui.fragments.popular.viewModel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import androidx.paging.map
 import com.example.khushi_baby_assignemnt.data.model.MovieResponse
 import com.example.khushi_baby_assignemnt.ui.fragments.popular.paging.PopularPagingSource
-import com.example.khushi_baby_assignemnt.ui.fragments.popular.viewmodel.PopularRepository
+import com.example.khushi_baby_assignemnt.data.repository.PopularRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PopularViewModel(private val repository: PopularRepository) : ViewModel() {
+@HiltViewModel
+class PopularViewModel @Inject constructor(
+    private val repository: PopularRepository,
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
     private val _popularMovies = MutableStateFlow<PagingData<MovieResponse>?>(null)
     val popularMovies: Flow<PagingData<MovieResponse>?> = _popularMovies

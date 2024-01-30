@@ -3,7 +3,7 @@ package com.example.khushi_baby_assignemnt.ui.fragments.popular.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.khushi_baby_assignemnt.data.model.MovieResponse
-import com.example.khushi_baby_assignemnt.ui.fragments.popular.viewmodel.PopularRepository
+import com.example.khushi_baby_assignemnt.data.repository.PopularRepository
 
 class PopularPagingSource(private val repository: PopularRepository) :
     PagingSource<Int, MovieResponse>() {

@@ -5,7 +5,10 @@ import android.os.Bundle
 import com.example.khushi_baby_assignemnt.databinding.ActivityMainBinding
 import com.example.khushi_baby_assignemnt.ui.adapter.MyPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding

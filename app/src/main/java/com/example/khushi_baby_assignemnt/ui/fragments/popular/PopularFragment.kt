@@ -1,34 +1,29 @@
 package com.example.khushi_baby_assignemnt.ui.fragments.popular
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.khushi_baby_assignemnt.R
-import com.example.khushi_baby_assignemnt.data.model.MovieResponse
 import com.example.khushi_baby_assignemnt.databinding.FragmentPopularBinding
 import com.example.khushi_baby_assignemnt.ui.adapter.OnItemClickListener
 import com.example.khushi_baby_assignemnt.ui.adapter.PopularAdapter
 import com.example.khushi_baby_assignemnt.ui.fragments.moviedetails.MovieDetailFragment
-import com.example.khushi_baby_assignemnt.ui.fragments.popular.viewmodel.PopularRepository
 import com.example.khushi_baby_assignemnt.ui.fragments.popular.viewModel.PopularViewModel
-import com.example.khushi_baby_assignemnt.ui.fragments.popular.viewModel.PopularViewModelFactory
 import com.google.android.material.tabs.TabLayout
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class PopularFragment : Fragment(R.layout.fragment_popular) ,OnItemClickListener {
 
     lateinit var binding: FragmentPopularBinding
-    private val viewModel: PopularViewModel by viewModels {
-        PopularViewModelFactory(PopularRepository())
-    }
+    private val viewModel: PopularViewModel by viewModels()
     lateinit var adapter: PopularAdapter
 
 

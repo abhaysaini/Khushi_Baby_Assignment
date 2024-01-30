@@ -8,18 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
-import com.example.khushi_baby_assignemnt.BuildConfig
 import com.example.khushi_baby_assignemnt.R
-import com.example.khushi_baby_assignemnt.data.api.RetrofitHelper
 import com.example.khushi_baby_assignemnt.data.model.MovieDetailsResponse
 import com.example.khushi_baby_assignemnt.databinding.FragmentMovieDetailBinding
 import com.example.khushi_baby_assignemnt.ui.viewmodel.MovieDetailViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
 
     lateinit var binding: FragmentMovieDetailBinding
@@ -53,25 +51,7 @@ class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
         }
     }
 
-    private fun fetchMovieDetails(movieId: Int) {
-        CoroutineScope(Dispatchers.Main).launch {
-            try {
-                val response =
-                    RetrofitHelper.responseApiInterface.getMovieDetails(movieId, "Bearer ${BuildConfig.ACCESS_TOKEN_AUTH}")
-                response.body()?.let { bindMovieDetails(it) }
-                if(response.isSuccessful){
-
-                }
-                else{
-                    Log.d("abhay", response.message().toString())
-                }
-            } catch (e: Exception) {
-                Log.d("abhay", e.message.toString())
-            }
-        }
-    }
-
-    private fun bindMovieDetails(movieDetails:MovieDetailsResponse) {
+    private fun bindMovieDetails(movieDetails: MovieDetailsResponse) {
         binding.apply {
             // Load image using Glide or another image loading library
             Glide.with(requireContext())

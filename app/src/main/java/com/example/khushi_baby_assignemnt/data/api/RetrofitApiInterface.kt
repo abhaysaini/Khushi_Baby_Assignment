@@ -13,7 +13,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface RetrofitApiInterface {
-
     @GET("movie/now_playing")
     suspend fun getMovieNowPlaying(
         @Header("Authorization") authorization: String,

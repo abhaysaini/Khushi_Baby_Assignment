@@ -6,13 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.khushi_baby_assignemnt.data.model.MovieDetailsResponse
 import com.example.khushi_baby_assignemnt.data.repository.MovieDetailRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import javax.inject.Inject
 
-class MovieDetailViewModel : ViewModel() {
-
-    private val movieDetailRepository = MovieDetailRepository()
+@HiltViewModel
+class MovieDetailViewModel @Inject constructor(private val movieDetailRepository: MovieDetailRepository): ViewModel() {
 
     private val _movieDetails = MutableLiveData<MovieDetailsResponse>()
     val movieDetails: LiveData<MovieDetailsResponse> = _movieDetails

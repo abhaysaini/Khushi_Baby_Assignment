@@ -3,7 +3,7 @@ package com.example.khushi_baby_assignemnt.ui.fragments.nowplaying.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.khushi_baby_assignemnt.data.model.MovieDisplayResponse
-import com.example.khushi_baby_assignemnt.ui.fragments.nowplaying.viewmodel.NowPlayingRepository
+import com.example.khushi_baby_assignemnt.data.repository.NowPlayingRepository
 
 class NowPlayingPagingSource(private val repository: NowPlayingRepository) :
     PagingSource<Int, MovieDisplayResponse>() {
