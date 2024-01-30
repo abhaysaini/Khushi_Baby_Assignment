@@ -8,17 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.khushi_baby_assignemnt.R
 import com.example.khushi_baby_assignemnt.data.model.MovieDisplayResponse
 import com.example.khushi_baby_assignemnt.databinding.FragmentNowPlayingBinding
 import com.example.khushi_baby_assignemnt.ui.adapter.NowPlayingAdapter
 import com.example.khushi_baby_assignemnt.ui.adapter.OnItemClickListener
+import com.example.khushi_baby_assignemnt.ui.adapter.PopularAdapter
 import com.example.khushi_baby_assignemnt.ui.fragments.moviedetails.MovieDetailFragment
 import com.example.khushi_baby_assignemnt.ui.fragments.nowplaying.viewModel.NowPlayingViewModel
 import com.example.khushi_baby_assignemnt.ui.fragments.nowplaying.viewModel.NowPlayingViewModelFactory
 import com.example.khushi_baby_assignemnt.ui.fragments.nowplaying.viewmodel.NowPlayingRepository
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class NowPlayingFragment : Fragment(R.layout.fragment_now_playing), OnItemClickListener {
 
@@ -39,28 +43,18 @@ class NowPlayingFragment : Fragment(R.layout.fragment_now_playing), OnItemClickL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = NowPlayingAdapter(requireContext(), mutableListOf(), this)
+        adapter = NowPlayingAdapter(requireContext(), this)
         binding.recyclerView.layoutManager = GridLayoutManager(
             requireContext(), 2,
             GridLayoutManager.VERTICAL, false
         )
         binding.recyclerView.adapter = adapter
 
-        viewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer { movies ->
-            movies?.let { setupRecyclerView(it) }
-        })
-        viewModel.error.observe(viewLifecycleOwner, Observer { error ->
-            error?.let { Log.e("NowPlayingFragment", it) }
-        })
-
         viewModel.fetchNowPlayingMovies()
-    }
-
-    private fun setupRecyclerView(movieList: List<MovieDisplayResponse>) {
-        adapter.apply {
-            moviesList.clear()
-            moviesList.addAll(movieList)
-            notifyDataSetChanged()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.nowPlayingMovies.collectLatest { pagingData ->
+                pagingData?.let { adapter.submitData(it) }
+            }
         }
     }
 
@@ -77,27 +71,3 @@ class NowPlayingFragment : Fragment(R.layout.fragment_now_playing), OnItemClickL
             .commit()
     }
 }
-
-
-
-
-
-//
-//        CoroutineScope(Dispatchers.Main).launch {
-//            try {
-//                val response = RetrofitHelper.responseApiInterface.getMovieNowPlaying(
-//                    "Bearer ${BuildConfig.ACCESS_TOKEN_AUTH}"
-//                )
-//                if (response.isSuccessful) {
-//                    Log.d("abhay", response.body().toString())
-//                    val movieDisplayList = response.body()?.results
-//                    requireActivity().runOnUiThread {
-//                        movieDisplayList?.let { setupRecyclerView(it) }
-//                    }
-//                } else {
-//                    Log.d("abhay", response.message().toString())
-//                }
-//            } catch (e: Exception) {
-//                Log.i("abhay", e.message.toString())
-//            }
-//        }

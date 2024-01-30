@@ -3,18 +3,19 @@ package com.example.khushi_baby_assignemnt.ui.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.khushi_baby_assignemnt.data.model.MovieDisplayResponse
+import com.example.khushi_baby_assignemnt.data.model.MovieResponse
 import com.example.khushi_baby_assignemnt.databinding.ItemMovieBinding
 
 class NowPlayingAdapter(
     val context: Context,
-    val moviesList: MutableList<MovieDisplayResponse>,
     private val itemClickListener: OnItemClickListener
 ) :
-    RecyclerView.Adapter<NowPlayingAdapter.MovieViewHolder>() {
+    PagingDataAdapter<MovieDisplayResponse, NowPlayingAdapter.MovieViewHolder>(Comparator) {
 
     lateinit var binding: ItemMovieBinding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -23,12 +24,8 @@ class NowPlayingAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.bind(moviesList[position])
-
-    }
-
-    override fun getItemCount(): Int {
-        return moviesList.size
+        val movie = getItem(position)
+        movie?.let { holder.bind(it) }
     }
 
     inner class MovieViewHolder(private val binding: ItemMovieBinding) :
@@ -49,6 +46,16 @@ class NowPlayingAdapter(
                 // Pass the movie ID to the click listener
                 itemClickListener.onItemClick(movie.id)
             }
+        }
+    }
+
+    object Comparator : DiffUtil.ItemCallback<MovieDisplayResponse>() {
+        override fun areItemsTheSame(oldItem: MovieDisplayResponse, newItem: MovieDisplayResponse): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: MovieDisplayResponse, newItem: MovieDisplayResponse): Boolean {
+            return oldItem == newItem
         }
     }
 }

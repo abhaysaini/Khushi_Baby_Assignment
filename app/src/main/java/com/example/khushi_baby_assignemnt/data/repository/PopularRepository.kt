@@ -8,9 +8,10 @@ import retrofit2.Response
 
 class PopularRepository {
 
-    suspend fun getPopularMovies(): Response<PopularMoviesResponse> {
+    suspend fun getPopularMovies(page:Int): Response<PopularMoviesResponse> {
         return RetrofitHelper.responseApiInterface.getPopularMovies(
-            "Bearer ${BuildConfig.ACCESS_TOKEN_AUTH}"
+            "Bearer ${BuildConfig.ACCESS_TOKEN_AUTH}",
+            page = page
         )
     }
 }

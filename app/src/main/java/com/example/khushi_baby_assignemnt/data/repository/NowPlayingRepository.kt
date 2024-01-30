@@ -8,9 +8,10 @@ import retrofit2.Response
 
 class NowPlayingRepository {
 
-    suspend fun getNowPlayingMovies(): Response<NowPlayingMoviesResponse> {
+    suspend fun getNowPlayingMovies(page:Int): Response<NowPlayingMoviesResponse> {
         return RetrofitHelper.responseApiInterface.getMovieNowPlaying(
-            "Bearer ${BuildConfig.ACCESS_TOKEN_AUTH}"
+            "Bearer ${BuildConfig.ACCESS_TOKEN_AUTH}",
+            page = page
         )
     }
 }

@@ -3,13 +3,18 @@ package com.example.khushi_baby_assignemnt.ui.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.khushi_baby_assignemnt.data.model.MovieResponse
 import com.example.khushi_baby_assignemnt.databinding.ItemMovieBinding
 
-class PopularAdapter(val context: Context, val moviesList: MutableList<MovieResponse>,private val itemClickListener: OnItemClickListener) :
-    RecyclerView.Adapter<PopularAdapter.MovieViewHolder>() {
+class PopularAdapter(
+    val context: Context,
+    private val itemClickListener: OnItemClickListener
+) :
+    PagingDataAdapter<MovieResponse, PopularAdapter.MovieViewHolder>(Comparator) {
 
 
     lateinit var binding: ItemMovieBinding
@@ -22,13 +27,10 @@ class PopularAdapter(val context: Context, val moviesList: MutableList<MovieResp
     }
 
     override fun onBindViewHolder(holder: PopularAdapter.MovieViewHolder, position: Int) {
-        holder.bind(moviesList[position])
-
+        val movie = getItem(position)
+        movie?.let { holder.bind(it) }
     }
 
-    override fun getItemCount(): Int {
-        return moviesList.size
-    }
 
     inner class MovieViewHolder(private val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -46,6 +48,17 @@ class PopularAdapter(val context: Context, val moviesList: MutableList<MovieResp
             itemView.setOnClickListener {
                 itemClickListener.onItemClick(movie.id)
             }
+        }
+    }
+
+
+    object Comparator : DiffUtil.ItemCallback<MovieResponse>() {
+        override fun areItemsTheSame(oldItem: MovieResponse, newItem: MovieResponse): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: MovieResponse, newItem: MovieResponse): Boolean {
+            return oldItem == newItem
         }
     }
 }
