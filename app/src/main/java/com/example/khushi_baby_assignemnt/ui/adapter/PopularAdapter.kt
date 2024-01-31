@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.khushi_baby_assignemnt.data.model.MovieResponse
 import com.example.khushi_baby_assignemnt.databinding.ItemMovieBinding
+import com.example.khushi_baby_assignemnt.utils.NetworkUtils
+import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -51,9 +53,18 @@ class PopularAdapter(
                 }
             }
             itemView.setOnClickListener {
-                itemClickListener.onItemClick(movie.id)
+                if (!NetworkUtils.isNetworkAvailable(context)) {
+                    showNoInternetSnackbar()
+                }
+                else{
+                    itemClickListener.onItemClick(movie.id)
+                }
             }
         }
+    }
+
+    private fun showNoInternetSnackbar() {
+        Snackbar.make(binding.root, "No internet connection", Snackbar.LENGTH_LONG).show()
     }
 
 

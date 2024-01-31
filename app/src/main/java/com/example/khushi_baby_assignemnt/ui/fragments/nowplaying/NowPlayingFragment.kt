@@ -24,7 +24,7 @@ class NowPlayingFragment : Fragment(R.layout.fragment_now_playing), OnItemClickL
 
     lateinit var binding: FragmentNowPlayingBinding
     private val viewModel: NowPlayingViewModel by viewModels{
-        NowPlayingViewModelFactory(NowPlayingRepository(requireContext()))
+        NowPlayingViewModelFactory(NowPlayingRepository(requireContext()), requireContext())
     }
     lateinit var adapter : NowPlayingAdapter
 

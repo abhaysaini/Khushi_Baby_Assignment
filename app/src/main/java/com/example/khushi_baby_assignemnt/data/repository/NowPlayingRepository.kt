@@ -4,18 +4,14 @@ import android.content.Context
 import com.example.khushi_baby_assignemnt.BuildConfig
 import com.example.khushi_baby_assignemnt.data.api.RetrofitHelper
 import com.example.khushi_baby_assignemnt.data.database.AppDatabase
-import com.example.khushi_baby_assignemnt.data.database.dao.MovieDao
-import com.example.khushi_baby_assignemnt.data.database.entities.MovieEntity
+import com.example.khushi_baby_assignemnt.data.database.dao.MovieDisplayDao
+import com.example.khushi_baby_assignemnt.data.database.entities.MovieDisplayEntity
 import com.example.khushi_baby_assignemnt.data.model.NowPlayingMoviesResponse
-import com.example.khushi_baby_assignemnt.utils.Constants
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import retrofit2.Response
 
-class NowPlayingRepository(private val context: Context) {
+class NowPlayingRepository(context: Context) {
 
-//    private val movieDao: MovieDao = AppDatabase.invoke(context).movieDao()
-
+    private val movieDisplayDao: MovieDisplayDao = AppDatabase.invoke(context).movieDisplayDao()
     suspend fun getNowPlayingMovies(page:Int): Response<NowPlayingMoviesResponse> {
         return RetrofitHelper.responseApiInterface.getMovieNowPlaying(
             "Bearer ${BuildConfig.ACCESS_TOKEN_AUTH}",
@@ -23,15 +19,15 @@ class NowPlayingRepository(private val context: Context) {
         )
     }
 
-//    suspend fun saveMoviesToDatabase(movies: List<MovieEntity>) {
-//        withContext(Dispatchers.IO) {
-//            movieDao.insertAll(movies)
-//        }
-//    }
-//
-//    suspend fun getSavedMoviesFromDatabase(): List<MovieEntity> {
-//        return withContext(Dispatchers.IO) {
-//            movieDao.getAllMovies()
-//        }
-//    }
+    suspend fun saveMoviesToDatabase(movies: List<MovieDisplayEntity>) {
+        movieDisplayDao.insertAllNowPlaying(movies)
+    }
+
+    suspend fun getSavedMoviesFromDatabase(): List<MovieDisplayEntity> {
+        return movieDisplayDao.getAllNowPlayingMovies()
+    }
+
+    suspend fun clearDatabase() {
+        movieDisplayDao.deleteAllNowPlaying()
+    }
 }

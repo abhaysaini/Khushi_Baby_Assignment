@@ -1,6 +1,7 @@
 // NowPlayingViewModel.kt
 package com.example.khushi_baby_assignemnt.ui.fragments.nowplaying.viewModel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,7 +20,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class NowPlayingViewModel(private val repository: NowPlayingRepository) : ViewModel() {
+class NowPlayingViewModel(private val repository: NowPlayingRepository,val context: Context) : ViewModel() {
 
     private val _nowPlayingMovies = MutableStateFlow<PagingData<MovieDisplayResponse>?>(null)
     val nowPlayingMovies: Flow<PagingData<MovieDisplayResponse>?> = _nowPlayingMovies
@@ -34,7 +35,7 @@ class NowPlayingViewModel(private val repository: NowPlayingRepository) : ViewMo
     fun fetchNowPlayingMovies() {
         viewModelScope.launch {
             try {
-                val pagingSource = NowPlayingPagingSource(repository)
+                val pagingSource = NowPlayingPagingSource(repository,context)
                 val pager = Pager(
                     config = PagingConfig(
                         pageSize = NETWORK_PAGE_SIZE

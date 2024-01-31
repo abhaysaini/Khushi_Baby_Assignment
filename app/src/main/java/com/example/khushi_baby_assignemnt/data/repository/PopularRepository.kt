@@ -1,4 +1,4 @@
-package com.example.khushi_baby_assignemnt.ui.fragments.popular.viewmodel
+package com.example.khushi_baby_assignemnt.data.repository
 
 import android.content.Context
 import com.example.khushi_baby_assignemnt.BuildConfig
@@ -13,8 +13,7 @@ import retrofit2.Response
 
 class PopularRepository (val context: Context){
 
-    lateinit var  movieDao: MovieDao
-//    private val movieDao: MovieDao = AppDatabase.invoke(context).movieDao()
+    private val movieDao: MovieDao = AppDatabase.invoke(context).movieDao()
 
 
     suspend fun getPopularMovies(page:Int): Response<PopularMoviesResponse> {

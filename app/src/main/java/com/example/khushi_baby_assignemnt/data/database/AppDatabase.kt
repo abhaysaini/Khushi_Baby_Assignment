@@ -5,11 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.khushi_baby_assignemnt.data.database.dao.MovieDao
+import com.example.khushi_baby_assignemnt.data.database.dao.MovieDisplayDao
+import com.example.khushi_baby_assignemnt.data.database.entities.MovieDisplayEntity
 import com.example.khushi_baby_assignemnt.data.database.entities.MovieEntity
 
-@Database(entities = [MovieEntity::class], version = 1)
+
+@Database(entities = [MovieEntity::class, MovieDisplayEntity::class], version = 1)
+
 abstract class AppDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDao
+    abstract fun movieDisplayDao(): MovieDisplayDao
 
     companion object {
         @Volatile
@@ -28,7 +33,7 @@ abstract class AppDatabase : RoomDatabase() {
             Room.databaseBuilder(
                 context.applicationContext,
                 AppDatabase::class.java,
-                "movie_database" // Change the database name if needed
+                "movie_database"
             ).build()
     }
 }

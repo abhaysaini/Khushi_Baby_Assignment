@@ -3,6 +3,9 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+apply plugin: 'kotlin-kapt'
+
+
 android {
     namespace = "com.example.khushi_baby_assignemnt"
     compileSdk = 34
@@ -60,9 +63,12 @@ dependencies {
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata:2.6.1"
 
-    // Room
-    implementation 'androidx.room:room-runtime:2.5.2'
-    annotationProcessor "androidx.room:room-compiler:2.5.2"
+
+    def room_version = "2.6.1"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     // Room ktx
     implementation "androidx.room:room-ktx:2.5.2"
@@ -93,6 +99,4 @@ dependencies {
     implementation "androidx.activity:activity-ktx:1.4.0"
     implementation "androidx.fragment:fragment-ktx:1.4.0"
     implementation "androidx.paging:paging-runtime-ktx:3.0.0"
-
-
 }
