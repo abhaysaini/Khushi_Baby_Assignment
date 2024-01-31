@@ -9,12 +9,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.map
+import com.example.khushi_baby_assignemnt.data.database.entities.MovieEntity
 import com.example.khushi_baby_assignemnt.data.model.MovieDisplayResponse
-import com.example.khushi_baby_assignemnt.data.model.MovieResponse
 import com.example.khushi_baby_assignemnt.ui.fragments.nowplaying.paging.NowPlayingPagingSource
-import com.example.khushi_baby_assignemnt.ui.fragments.nowplaying.viewmodel.NowPlayingRepository
-import com.example.khushi_baby_assignemnt.ui.fragments.popular.paging.PopularPagingSource
-import com.example.khushi_baby_assignemnt.ui.fragments.popular.viewmodel.PopularRepository
+import com.example.khushi_baby_assignemnt.data.repository.NowPlayingRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -35,7 +34,6 @@ class NowPlayingViewModel(private val repository: NowPlayingRepository) : ViewMo
     fun fetchNowPlayingMovies() {
         viewModelScope.launch {
             try {
-
                 val pagingSource = NowPlayingPagingSource(repository)
                 val pager = Pager(
                     config = PagingConfig(

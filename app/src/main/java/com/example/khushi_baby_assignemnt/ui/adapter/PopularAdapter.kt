@@ -9,6 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.khushi_baby_assignemnt.data.model.MovieResponse
 import com.example.khushi_baby_assignemnt.databinding.ItemMovieBinding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class PopularAdapter(
     val context: Context,
@@ -42,6 +46,7 @@ class PopularAdapter(
 
                 binding.apply {
                     movieName.text = movie.title
+                    movieYear.text = extractYearFromDate(movie.release_date.toString())
                     ratingBar.rating = (movie.vote_average / 2).toFloat()
                 }
             }
@@ -60,6 +65,14 @@ class PopularAdapter(
         override fun areContentsTheSame(oldItem: MovieResponse, newItem: MovieResponse): Boolean {
             return oldItem == newItem
         }
+    }
+
+
+    fun extractYearFromDate(releaseDate: String): String {
+        val dateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
+        val calendar = Calendar.getInstance()
+        calendar.time = dateFormat.parse(releaseDate) ?: Date()
+        return calendar.get(Calendar.YEAR).toString()
     }
 }
 

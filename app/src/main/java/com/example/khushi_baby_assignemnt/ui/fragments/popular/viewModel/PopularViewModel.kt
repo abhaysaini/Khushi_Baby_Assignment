@@ -1,6 +1,7 @@
 // PopularViewModel.kt
 package com.example.khushi_baby_assignemnt.ui.fragments.popular.viewModel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,12 +14,14 @@ import androidx.paging.map
 import com.example.khushi_baby_assignemnt.data.model.MovieResponse
 import com.example.khushi_baby_assignemnt.ui.fragments.popular.paging.PopularPagingSource
 import com.example.khushi_baby_assignemnt.ui.fragments.popular.viewmodel.PopularRepository
+import com.example.khushi_baby_assignemnt.utils.NetworkUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 
 class PopularViewModel(private val repository: PopularRepository) : ViewModel() {
 
@@ -35,7 +38,6 @@ class PopularViewModel(private val repository: PopularRepository) : ViewModel() 
     fun fetchPopularMovies() {
         viewModelScope.launch {
             try {
-
                 val pagingSource = PopularPagingSource(repository)
                 val pager = Pager(
                     config = PagingConfig(
@@ -47,7 +49,6 @@ class PopularViewModel(private val repository: PopularRepository) : ViewModel() 
                 pager.cachedIn(viewModelScope).collectLatest { pagingData ->
                     _popularMovies.value = pagingData
                 }
-
             } catch (e: Exception) {
                 _error.postValue("Error occurred: ${e.message}")
             }

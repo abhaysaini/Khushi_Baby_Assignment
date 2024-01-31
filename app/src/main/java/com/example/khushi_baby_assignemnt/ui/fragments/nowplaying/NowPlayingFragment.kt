@@ -1,25 +1,21 @@
 package com.example.khushi_baby_assignemnt.ui.fragments.nowplaying
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.khushi_baby_assignemnt.R
-import com.example.khushi_baby_assignemnt.data.model.MovieDisplayResponse
 import com.example.khushi_baby_assignemnt.databinding.FragmentNowPlayingBinding
 import com.example.khushi_baby_assignemnt.ui.adapter.NowPlayingAdapter
 import com.example.khushi_baby_assignemnt.ui.adapter.OnItemClickListener
-import com.example.khushi_baby_assignemnt.ui.adapter.PopularAdapter
 import com.example.khushi_baby_assignemnt.ui.fragments.moviedetails.MovieDetailFragment
 import com.example.khushi_baby_assignemnt.ui.fragments.nowplaying.viewModel.NowPlayingViewModel
 import com.example.khushi_baby_assignemnt.ui.fragments.nowplaying.viewModel.NowPlayingViewModelFactory
-import com.example.khushi_baby_assignemnt.ui.fragments.nowplaying.viewmodel.NowPlayingRepository
+import com.example.khushi_baby_assignemnt.data.repository.NowPlayingRepository
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -28,7 +24,7 @@ class NowPlayingFragment : Fragment(R.layout.fragment_now_playing), OnItemClickL
 
     lateinit var binding: FragmentNowPlayingBinding
     private val viewModel: NowPlayingViewModel by viewModels{
-        NowPlayingViewModelFactory(NowPlayingRepository())
+        NowPlayingViewModelFactory(NowPlayingRepository(requireContext()))
     }
     lateinit var adapter : NowPlayingAdapter
 

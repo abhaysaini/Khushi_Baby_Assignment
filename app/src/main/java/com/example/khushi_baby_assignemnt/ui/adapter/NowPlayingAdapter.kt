@@ -1,8 +1,10 @@
 package com.example.khushi_baby_assignemnt.ui.adapter
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +12,10 @@ import com.bumptech.glide.Glide
 import com.example.khushi_baby_assignemnt.data.model.MovieDisplayResponse
 import com.example.khushi_baby_assignemnt.data.model.MovieResponse
 import com.example.khushi_baby_assignemnt.databinding.ItemMovieBinding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class NowPlayingAdapter(
     val context: Context,
@@ -38,12 +44,11 @@ class NowPlayingAdapter(
 
                 binding.apply {
                     movieName.text = movie.title
-//                    movieYear.text = movie.release_date.toString()
+                    movieYear.text = extractYearFromDate(movie.release_date.toString())
                     ratingBar.rating = (movie.vote_average / 2).toFloat()
                 }
             }
             itemView.setOnClickListener {
-                // Pass the movie ID to the click listener
                 itemClickListener.onItemClick(movie.id)
             }
         }
@@ -57,5 +62,12 @@ class NowPlayingAdapter(
         override fun areContentsTheSame(oldItem: MovieDisplayResponse, newItem: MovieDisplayResponse): Boolean {
             return oldItem == newItem
         }
+    }
+
+    fun extractYearFromDate(releaseDate: String): String {
+        val dateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
+        val calendar = Calendar.getInstance()
+        calendar.time = dateFormat.parse(releaseDate) ?: Date()
+        return calendar.get(Calendar.YEAR).toString()
     }
 }

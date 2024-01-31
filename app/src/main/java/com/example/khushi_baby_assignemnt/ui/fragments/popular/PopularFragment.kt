@@ -27,7 +27,7 @@ class PopularFragment : Fragment(R.layout.fragment_popular) ,OnItemClickListener
 
     lateinit var binding: FragmentPopularBinding
     private val viewModel: PopularViewModel by viewModels {
-        PopularViewModelFactory(PopularRepository())
+        PopularViewModelFactory(PopularRepository(requireContext()))
     }
     lateinit var adapter: PopularAdapter
 
